@@ -1,0 +1,9 @@
+[attr]rust text eol=lf whitespace=tab-in-indent,trailing-space,tabwidth=4
+
+* text=auto eol=lf
+*.rs rust
+
+# Older git versions try to fix line endings on images, this prevents it.
+*.png binary
+*.jpg binary
+*.ico binary
