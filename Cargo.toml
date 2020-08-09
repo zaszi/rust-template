@@ -3,7 +3,32 @@ name = "rust-template"
 version = "0.1.0"
 authors = ["zaszi <admin@zaszi.net>"]
 edition = "2018"
+description = "A project template for Rust, helping to structure your projects according to best practices and avoid doing the same setup time and again."
+documentation = "https://github.com/zaszi/rust-template"
+readme = "README.md"
+homepage = "https://github.com/zaszi/rust-template"
+repository = "https://github.com/zaszi/rust-template"
+license-file = "LICENSE.md"
+keywords = ["template", "wasm"]
+categories = ["rust-patterns", "wasm"]
+publish = false
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[features]
+default = []
 
 [dependencies]
+wasm-bindgen = "0.2"
+
+[dev-dependencies]
+wasm-bindgen-test = "0.2"
+
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+console_error_panic_hook = "0.1"
+wee_alloc = "0.4"
+
+[profile.release]
+lto = true
+panic = "abort"
