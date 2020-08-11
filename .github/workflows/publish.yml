@@ -1,0 +1,174 @@
+---
+
+name: Publish
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  publish:
+    name: Publish for ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        build: [linux, macos, windows]
+        include:
+          - build: linux
+            os: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+            archive: .tar.gz
+            type: application/gzip
+          - build: macos
+            os: macos-latest
+            target: x86_64-apple-darwin
+            archive: .tar.gz
+            type: application/gzip
+          - build: windows
+            os: windows-latest
+            target: x86_64-pc-windows-msvc
+            archive: .zip
+            type: application/zip
+
+    steps:
+      - name: Export project name environment variable
+        shell: bash
+        run: echo ::set-env name=PROJECT_NAME::${GITHUB_REPOSITORY#*/}
+
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Install stable toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          override: true
+          profile: minimal
+          target: ${{ matrix.target }}
+
+      - name: Build for ${{ matrix.os }}
+        shell: bash
+        run: cargo build --release --locked --target ${{ matrix.target }}
+
+      - name: Package assets
+        id: package
+        shell: bash
+        run: |
+          # Declare variables
+          name=${{ env.PROJECT_NAME }}
+          tag=$(git describe --tags --abbrev=0)
+          release_name="$name"-"$tag"-${{ matrix.build }}
+          release_file="$release_name"${{ matrix.archive }}
+          # Create archive directory
+          mkdir "$release_name"
+          # Strip binaries on Linux and MacOS
+          if [ "${{ runner.os }}" = "Linux" ]; then
+            strip -s "target/${{ matrix.target }}/release/$name"
+          elif [ "${{ runner.os }}" = "macOS" ]; then
+            strip "target/${{ matrix.target }}/release/$name"
+          fi
+          # Copy binaries to archive directory
+          if [ "${{ runner.os }}" = "Windows" ]; then
+            cp "target/${{ matrix.target }}/release/$name.exe" \
+            "$release_name.exe"
+          else
+            cp "target/${{ matrix.target }}/release/$name" "$release_name"
+          fi
+          # Copy additional files
+          cp README.md "$release_name"
+          cp README_WEB.md "$release_name/README_WEB.md"
+          cp LICENSE.md "$release_name"
+          # Create archive
+          if [ "${{ runner.os }}" = "Windows" ]; then
+            7z a "$release_file" "$release_name"
+          else
+            tar czvf "$release_file" "$release_name"
+          fi
+          # set outputs for upload step
+          echo "::set-output name=asset_name::$release_file"
+          echo "::set-output name=asset_path::$release_file"
+
+      - name: Upload release assets
+        uses: actions/upload-release-asset@v1.0.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_name: ${{ steps.package.outputs.asset_name }}
+          asset_path: ${{ steps.package.outputs.asset_path }}
+          asset_content_type: ${{ matrix.type }}
+
+  wasm:
+    name: Publish for WASM
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        build: [wasm]
+        include:
+          - build: wasm
+            os: ubuntu-latest
+            target: wasm32-unknown-unknown
+            archive: .tar.gz
+            type: application/gzip
+
+    steps:
+      - name: Export project name environment variable
+        shell: bash
+        run: echo ::set-env name=PROJECT_NAME::${GITHUB_REPOSITORY#*/}
+
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Install WASM target
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          override: true
+          profile: minimal
+          target: ${{ matrix.target }}
+
+      - name: Install wasm-pack
+        shell: bash
+        run: cargo install wasm-pack
+
+      - name: Build for ${{ matrix.os }}
+        shell: bash
+        run: |
+          wasm-pack build --target web --release  \
+          --out-name ${{ env.PROJECT_NAME }}
+
+      - name: Package assets
+        id: package
+        shell: bash
+        run: |
+          # Declare variables
+          name=${{ env.PROJECT_NAME }}
+          tag=$(git describe --tags --abbrev=0)
+          release_name="$name"-"$tag"-${{ matrix.build }}
+          release_file="$release_name"${{ matrix.archive }}
+          # Create archive directory
+          mkdir "$release_name"
+          # Copy binaries to archive directory
+          cp pkg/"$name"_bg.wasm "$release_name"
+          cp pkg/"$name".js "$release_name"
+          # Copy additional files
+          cp README.md "$release_name"
+          cp README_WEB.md "$release_name/README_WEB.md"
+          cp LICENSE.md "$release_name"
+          # Create archive
+          tar czvf "$release_file" "$release_name"
+          # set outputs for upload step
+          echo "::set-output name=asset_name::$release_file"
+          echo "::set-output name=asset_path::$release_file"
+
+      - name: Upload release assets
+        uses: actions/upload-release-asset@v1.0.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_name: ${{ steps.package.outputs.asset_name }}
+          asset_path: ${{ steps.package.outputs.asset_path }}
+          asset_content_type: ${{ matrix.type }}

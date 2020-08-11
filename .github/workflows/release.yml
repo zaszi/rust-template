@@ -1,0 +1,33 @@
+---
+
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    name: Create release
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Export project name environment variable
+        shell: bash
+        run: echo ::set-env name=PROJECT_NAME::${GITHUB_REPOSITORY#*/}
+
+      - name: Export source tag environment variable
+        shell: bash
+        run: echo ::set-env name=SOURCE_TAG::${GITHUB_REF/refs\/tags\//}
+
+      - name: Create release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ env.SOURCE_TAG }}
+          release_name: ${{ env.PROJECT_NAME }} ${{ env.SOURCE_TAG }}
+          draft: true
+          prerelease: true
