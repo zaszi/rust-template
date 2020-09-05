@@ -8,7 +8,7 @@ A project template for Rust, helping to structure your projects according to bes
 
 - Suitable for both a binary or library project
 - Structured according to both Git and Rust best practices
-  - Includes readme, license, gitignore and gitattributes
+  - Includes readme, license, changelog, gitignore and gitattributes
   - Extensive Cargo manifest
   - [Separation of concerns for binary projects](https://doc.rust-lang.org/stable/book/ch12-03-improving-error-handling-and-modularity.html?highlight=separation,concerns#separation-of-concerns-for-binary-projects)
 - Multiplatform support - The template is compatible with Linux, MacOS and Windows
@@ -27,7 +27,7 @@ A project template for Rust, helping to structure your projects according to bes
   - Publish: Automated publishing of binary assets for a GitHub Release:
     - Build binaries for Linux, MacOS, Windows and WebAssembly
     - Archive binaries with a license, readme and appropate files for each platform
-    - Upload archives as assets for the appropate GitHub release
+    - Upload archives as assets for the appropriate GitHub release
 
 ## Download
 
@@ -45,6 +45,7 @@ checklist:
 1. Update `Cargo.toml` with the correct information for your project.
 1. Change the name inside the `LICENSE.md` file, or replace with a license of your choice.
 1. Update this `README.md` and `README_WEB.md` (do not forget to replace URLs).
+1. Update the `CHANGELOG` as you add to your project.
 
 ## Building
 
