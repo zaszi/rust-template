@@ -78,6 +78,7 @@ jobs:
           cp README.md "$release_name"
           cp README_WEB.md "$release_name/README_WEB.md"
           cp LICENSE.md "$release_name"
+          cp CHANGELOG.md "$release_name"
           # Create archive
           if [ "${{ runner.os }}" = "Windows" ]; then
             7z a "$release_file" "$release_name"
@@ -156,6 +157,7 @@ jobs:
           cp README.md "$release_name"
           cp README_WEB.md "$release_name/README_WEB.md"
           cp LICENSE.md "$release_name"
+          cp CHANGELOG.md "$release_name"
           # Create archive
           tar czvf "$release_file" "$release_name"
           # set outputs for upload step
