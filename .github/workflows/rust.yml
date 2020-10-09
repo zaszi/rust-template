@@ -46,33 +46,6 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           args: --verbose --release -- -D warnings
 
-  check:
-    name: Check (${{ matrix.os }})
-    runs-on: ${{ matrix.os }}
-
-    strategy:
-      matrix:
-        include:
-          - os: ubuntu-latest
-          - os: windows-latest
-          - os: macos-latest
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Install stable toolchain
-        uses: actions-rs/toolchain@v1
-        with:
-          toolchain: stable
-          override: true
-
-      - name: Check for ${{ matrix.os }}
-        uses: actions-rs/cargo@v1
-        with:
-          command: check
-          args: --verbose --release
-
   wasm:
     name: Check (wasm)
     runs-on: ubuntu-latest
