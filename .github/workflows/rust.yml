@@ -44,7 +44,7 @@ jobs:
         uses: actions-rs/clippy-check@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          args: -- -D warnings
+          args: --verbose --release -- -D warnings
 
   check:
     name: Check (${{ matrix.os }})
