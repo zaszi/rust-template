@@ -43,7 +43,7 @@ checklist:
    1. Remove `src/main.rs`.
    1. Remove `.github/workflows/publish.yml`
 1. Update `Cargo.toml` with the correct information for your project.
-1. Change the name inside the `LICENSE.md` file, or replace with a license of your choice.
+1. Change the name inside the `LICENSE` file, or replace with a license of your choice.
 1. Update this `README.md` and `README_WEB.md` (do not forget to replace URLs).
 1. Update the `CHANGELOG` as you add to your project.
 
@@ -67,4 +67,4 @@ Found a problem or have a suggestion? Feel free to open an issue.
 
 ## License
 
-Rust-template itself is licensed under the [MIT license](https://github.com/zaszi/rust-template/blob/master/LICENSE.md) and includes this as the default project license.
+Rust-template itself is licensed under the [MIT license](https://github.com/zaszi/rust-template/blob/master/LICENSE) and includes this as the default project license.
