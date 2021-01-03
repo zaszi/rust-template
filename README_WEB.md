@@ -8,17 +8,16 @@ An archived WASM binary can be found on the [Releases](https://github.com/zaszi/
 
 ## Usage
 
-Simply serving `rust-template_bg.wasm` and `rust-template.js` (found under WASM in [Releases](https://github.com/zaszi/rust-template/releases) or after building in the `pkg` directory) utilizing your web server of choice is sufficient to host rust-template. You will still need to make a single call with javascript in your web page as follows:
+Simply serving `rust-template_bg.wasm` and `rust-template.js` (found under WASM in [Releases](https://github.com/zaszi/rust-template/releases) or after building in the `pkg` directory) utilizing your web server of choice is sufficient to host rust-template. You will need to add a small script, here named `run.js`:
 
 ```
 import init from './rust-template.js';
 init('./rust-template_bg.wasm').then(function (wasm) { wasm.run(); });
 ```
 
-Which can then be called from within a simple HTML canvas:
+Which can then be called from within a simple HTML script tag in your webpage:
 
 ```
-<canvas id="canvas" width="640" height="480"></canvas>
 <script type="module" src="run.js"></script>
 ```
 
