@@ -6,8 +6,8 @@ static ALLOC: wee_alloc::WeeAlloc = wee_alloc::WeeAlloc::INIT;
 
 const _VERSION: &str = env!("CARGO_PKG_VERSION");
 
-#[wasm_bindgen]
 /// Run our program, put all program logic here or in subsequent modules.
+#[wasm_bindgen]
 pub fn run() {
     set_panic_hook();
     // Program logic here
