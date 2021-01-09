@@ -59,7 +59,7 @@ cargo build --release
 
 ## WebAssembly
 
-Rust-template supports running as WebAssembly in the browser. See the [web readme](https://github.com/zaszi/rust-template/blob/master/README_WEB.md) for instructions.
+Rust-template supports running as WebAssembly in the browser. See the [web readme](README_WEB.md) for instructions.
 
 ## Contribution
 
@@ -67,4 +67,4 @@ Found a problem or have a suggestion? Feel free to open an issue.
 
 ## License
 
-Rust-template itself is licensed under the [MIT license](https://github.com/zaszi/rust-template/blob/master/LICENSE) and includes this as the default project license.
+Rust-template itself is licensed under the [MIT license](LICENSE) and includes this as the default project license.
