@@ -39,7 +39,7 @@ To tailor the template to your specific needs, simply go over the following
 checklist:
 
 1. The template assumes a binary project by default. If you require a library project:
-   1. Comment out Cargo.lock in `.gitignore`.
+   1. Uncomment Cargo.lock in `.gitignore`.
    1. Remove `src/main.rs`.
    1. Remove `.github/workflows/publish.yml`
 1. Update `Cargo.toml` with the correct information for your project.
