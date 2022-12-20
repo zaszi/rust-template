@@ -2,7 +2,7 @@
 
 ![Build Status](https://github.com/zaszi/rust-template/workflows/Rust/badge.svg)
 
-A project template for Rust, helping to structure your projects according to best practices and avoid doing the same setup time and again.
+A project template for Rust, helping to structure your projects according to best practices.
 
 ## Features
 
